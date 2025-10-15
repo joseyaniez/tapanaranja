@@ -2,32 +2,22 @@
 package com.joseyaniez.tapanaranja.features.exams.model.entity;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.joseyaniez.tapanaranja.features.courses.model.entity.Section;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
- * Question
+ * Alternative
  */
-@Entity
-@Data
-@NoArgsConstructor
-public class Question {
+public class Alternative {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,18 +25,15 @@ public class Question {
 
     private String content;
     private String imagePath;
+    private Boolean isCorrect;
 
     @ManyToOne
-    @JoinColumn(name = "section_id")
-    private Section section;
-
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
-    private Set<Alternative> alternatives;
+    @JoinColumn(name = "question_id")
+    private Question question;
 
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime updatedAt;
-    
 }
