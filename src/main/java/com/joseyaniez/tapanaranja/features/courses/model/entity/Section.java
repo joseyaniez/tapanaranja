@@ -2,12 +2,10 @@
 package com.joseyaniez.tapanaranja.features.courses.model.entity;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,17 +13,16 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Chapter
+ * Section
  */
 @Entity
-@NoArgsConstructor
 @Data
-public class Chapter {
+@NoArgsConstructor
+public class Section {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,20 +30,14 @@ public class Chapter {
 
     private String name;
 
-    @Column(name = "chapter_order")
-    private Integer chapterOrder;
-
     @ManyToOne
-    @JoinColumn(name = "course_id")
-    private Course course;
+    @JoinColumn(name = "chapter_id")
+    private Chapter chapter;
 
-    @OneToMany(mappedBy = "chapter", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private List<Section> sections;
 
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime updatedAt;
-    
 }
