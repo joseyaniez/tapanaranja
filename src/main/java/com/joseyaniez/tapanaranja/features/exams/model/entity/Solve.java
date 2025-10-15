@@ -2,33 +2,27 @@
 package com.joseyaniez.tapanaranja.features.exams.model.entity;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.joseyaniez.tapanaranja.features.courses.model.entity.Section;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Question
+ * Solve
  */
 @Entity
 @Data
 @NoArgsConstructor
-public class Question {
+public class Solve {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,15 +31,9 @@ public class Question {
     private String content;
     private String imagePath;
 
-    @ManyToOne
-    @JoinColumn(name = "section_id")
-    private Section section;
-
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
-    private Set<Alternative> alternatives;
-
-    @OneToOne(mappedBy = "question", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private Solve solve;
+    @OneToOne
+    @JoinColumn(name = "question_id", referencedColumnName = "id")
+    private Question question;
 
     @CreationTimestamp
     @Column(updatable = false)
