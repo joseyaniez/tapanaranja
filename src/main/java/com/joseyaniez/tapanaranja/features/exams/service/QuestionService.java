@@ -1,5 +1,5 @@
 
-package com.joseyaniez.tapanaranja.features.exams.model.service;
+package com.joseyaniez.tapanaranja.features.exams.service;
 
 import java.util.List;
 

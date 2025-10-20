@@ -1,5 +1,5 @@
 
-package com.joseyaniez.tapanaranja.features.exams.model.service;
+package com.joseyaniez.tapanaranja.features.exams.service;
 
 import com.joseyaniez.tapanaranja.features.exams.model.dto.request.SolveRequest;
 import com.joseyaniez.tapanaranja.features.exams.model.dto.response.SolveResponse;
