@@ -11,6 +11,8 @@ import com.joseyaniez.tapanaranja.features.exams.model.dto.response.QuestionResp
  */
 public interface QuestionService {
     List<QuestionResponse> getQuestionsByCourse(Long courseId, int size);
+    List<QuestionResponse> getQuestionsByChapter(Long chapterId, int size);
+    List<QuestionResponse> getQuestionsBySection(Long sectionId, int size);
     QuestionResponse getQuestionById(Long id);
     QuestionResponse createQuestion(QuestionRequest questionRequest);
     QuestionResponse updateQuestion(QuestionRequest questionRequest);
