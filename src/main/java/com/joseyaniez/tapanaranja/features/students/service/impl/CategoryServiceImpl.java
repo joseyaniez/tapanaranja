@@ -18,14 +18,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
 
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
 	@Override
 	public CategoryResponse createCategory(CategoryRequest categoryRequest) {
         Category category = new Category();
         category.setName(categoryRequest.getName());
-        categoryRepository.save(category);
-        CategoryResponse response = new CategoryResponse(category.getName());
+        category = categoryRepository.save(category);
+        CategoryResponse response = new CategoryResponse(category.getId(), category.getName());
         return response;
 	}
 
