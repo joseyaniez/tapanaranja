@@ -16,7 +16,7 @@ import jakarta.validation.Valid;
  * CategoryController
  */
 @RestController
-@RequestMapping("/category")
+@RequestMapping("/categories")
 public class CategoryController {
 
     private final CategoryServiceImpl categoryService;
