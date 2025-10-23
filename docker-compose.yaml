@@ -1,0 +1,18 @@
+version: '3.9'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: tapanaranja-container
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: tapanaranjadb
+      MYSQL_USER: tapanaranjauser
+      MYSQL_PASSWORD: tapanaranjapassword
+    volumes:
+      - tapanaranja-db-volume:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+volumes:
+  tapanaranja-db-volume:
