@@ -1,6 +1,8 @@
 
 package com.joseyaniez.tapanaranja.features.students.service.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.joseyaniez.tapanaranja.features.students.model.dto.request.CategoryRequest;
@@ -16,9 +18,18 @@ import lombok.RequiredArgsConstructor;
  */
 @Service
 @RequiredArgsConstructor
+
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
+
+    @Override
+    public List<CategoryResponse> getAll() {
+        List<CategoryResponse> categories = categoryRepository.findAll().stream().map(category -> 
+            new CategoryResponse(category.getId(), category.getName())
+        ).toList();
+        return categories;
+    }
 
 	@Override
 	public CategoryResponse createCategory(CategoryRequest categoryRequest) {

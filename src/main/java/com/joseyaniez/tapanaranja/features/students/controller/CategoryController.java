@@ -1,6 +1,9 @@
 
 package com.joseyaniez.tapanaranja.features.students.controller;
 
+import java.util.List;
+
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +26,12 @@ public class CategoryController {
 
     public CategoryController(CategoryServiceImpl categoryServiceImpl){
         this.categoryService = categoryServiceImpl;
+    }
+
+    @GetMapping
+    public List<CategoryResponse> getAll(){
+        List<CategoryResponse> categories = categoryService.getAll();
+        return categories;
     }
 
     @PostMapping
