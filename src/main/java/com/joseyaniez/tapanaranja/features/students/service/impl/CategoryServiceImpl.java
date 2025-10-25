@@ -33,7 +33,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
 	@Override
-	public CategoryResponse createCategory(CategoryRequest categoryRequest) {
+	public CategoryResponse create(CategoryRequest categoryRequest) {
         if(categoryRepository.existsByName(categoryRequest.getName())){
             throw new ResourceAlreadyExistsException("Category", "name", categoryRequest.getName());
         }
@@ -45,13 +45,13 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public CategoryResponse updateCategory(Long id, CategoryRequest categoryRequest) {
+	public CategoryResponse update(Long id, CategoryRequest categoryRequest) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("Unimplemented method 'updateCategory'");
 	}
 
 	@Override
-	public void deleteCategory(Long id) {
+	public void delete(Long id) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("Unimplemented method 'deleteCategory'");
 	}

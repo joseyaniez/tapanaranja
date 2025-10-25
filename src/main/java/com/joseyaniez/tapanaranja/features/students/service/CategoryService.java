@@ -11,7 +11,7 @@ import com.joseyaniez.tapanaranja.features.students.model.dto.response.CategoryR
  */
 public interface CategoryService {
     List<CategoryResponse> getAll();
-    CategoryResponse createCategory(CategoryRequest categoryRequest);
-    CategoryResponse updateCategory(Long id, CategoryRequest categoryRequest);
-    void deleteCategory(Long id);
+    CategoryResponse create(CategoryRequest categoryRequest);
+    CategoryResponse update(Long id, CategoryRequest categoryRequest);
+    void delete(Long id);
 }

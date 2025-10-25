@@ -37,7 +37,7 @@ public class CategoryController {
 
     @PostMapping
     public ApiResponse<CategoryResponse> createCategory(@RequestBody @Valid CategoryRequest categoryRequest){
-        CategoryResponse categoryResponse = categoryService.createCategory(categoryRequest);
+        CategoryResponse categoryResponse = categoryService.create(categoryRequest);
         return new ApiResponse<>(true, categoryResponse, "Categoría insertada");
     }
     
