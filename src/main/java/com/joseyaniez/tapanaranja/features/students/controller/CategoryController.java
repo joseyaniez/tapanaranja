@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.joseyaniez.tapanaranja.core.web.response.ApiResponse;
 import com.joseyaniez.tapanaranja.features.students.model.dto.request.CategoryRequest;
 import com.joseyaniez.tapanaranja.features.students.model.dto.response.CategoryResponse;
 import com.joseyaniez.tapanaranja.features.students.service.impl.CategoryServiceImpl;
@@ -29,15 +30,15 @@ public class CategoryController {
     }
 
     @GetMapping
-    public List<CategoryResponse> getAll(){
+    public ApiResponse<List<CategoryResponse>> getAll(){
         List<CategoryResponse> categories = categoryService.getAll();
-        return categories;
+        return new ApiResponse<>(true, categories, null);
     }
 
     @PostMapping
-    public CategoryResponse createCategory(@RequestBody @Valid CategoryRequest categoryRequest){
+    public ApiResponse<CategoryResponse> createCategory(@RequestBody @Valid CategoryRequest categoryRequest){
         CategoryResponse categoryResponse = categoryService.createCategory(categoryRequest);
-        return categoryResponse;
+        return new ApiResponse<>(true, categoryResponse, "Categoría insertada");
     }
     
 }
