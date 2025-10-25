@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.joseyaniez.tapanaranja.core.exception.business.ResourceAlreadyExistsException;
 import com.joseyaniez.tapanaranja.features.students.model.dto.request.CategoryRequest;
 import com.joseyaniez.tapanaranja.features.students.model.dto.response.CategoryResponse;
 import com.joseyaniez.tapanaranja.features.students.model.entity.Category;
@@ -33,6 +34,9 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public CategoryResponse createCategory(CategoryRequest categoryRequest) {
+        if(categoryRepository.existsByName(categoryRequest.getName())){
+            throw new ResourceAlreadyExistsException("Category", "name", categoryRequest.getName());
+        }
         Category category = new Category();
         category.setName(categoryRequest.getName());
         category = categoryRepository.save(category);

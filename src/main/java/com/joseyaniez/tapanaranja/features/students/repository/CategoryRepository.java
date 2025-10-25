@@ -9,6 +9,5 @@ import com.joseyaniez.tapanaranja.features.students.model.entity.Category;
  * CategoryRepository
  */
 public interface CategoryRepository extends JpaRepository<Category, Long>{
-
-    
+    boolean existsByName(String name);
 }
