@@ -12,6 +12,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.joseyaniez.tapanaranja.core.exception.business.ResourceAlreadyExistsException;
 import com.joseyaniez.tapanaranja.core.exception.response.ErrorResponse;
 
 /**
@@ -19,6 +20,18 @@ import com.joseyaniez.tapanaranja.core.exception.response.ErrorResponse;
  */
 @RestControllerAdvice
 public class AppExceptionHandler {
+
+    @ExceptionHandler(ResourceAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleResourceAlreadyExists(ResourceAlreadyExistsException ex){
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(
+            new ErrorResponse(
+                ex.getCode(),
+                ex.getMessage(),
+                ex.getStatus().value(),
+                LocalDateTime.now()
+            )
+        );
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidationError(MethodArgumentNotValidException ex){
@@ -29,7 +42,6 @@ public class AppExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMapResponse);
     }
 
-    // Ocurre cuando no se puede mapear el body a la clase dto
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorResponse> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
