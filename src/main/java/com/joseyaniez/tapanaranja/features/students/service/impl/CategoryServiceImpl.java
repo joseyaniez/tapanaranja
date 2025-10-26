@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.joseyaniez.tapanaranja.core.exception.business.ResourceAlreadyExistsException;
+import com.joseyaniez.tapanaranja.core.exception.business.ResourceNotFoundException;
 import com.joseyaniez.tapanaranja.features.students.model.dto.request.CategoryRequest;
 import com.joseyaniez.tapanaranja.features.students.model.dto.response.CategoryResponse;
 import com.joseyaniez.tapanaranja.features.students.model.entity.Category;
@@ -46,8 +47,16 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public CategoryResponse update(Long id, CategoryRequest categoryRequest) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'updateCategory'");
+        Category category = categoryRepository
+            .findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Category", "id", id));
+        if(category.getName().equals(categoryRequest.getName()) || categoryRepository.existsByName(categoryRequest.getName())){
+            throw new ResourceAlreadyExistsException("Category", "name", categoryRequest.getName());
+        }
+        category.setName(categoryRequest.getName());
+        category = categoryRepository.save(category);
+        CategoryResponse response = new CategoryResponse(category.getId(), category.getName());
+        return response;
 	}
 
 	@Override
