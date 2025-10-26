@@ -61,8 +61,10 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public void delete(Long id) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'deleteCategory'");
+        if(!categoryRepository.existsById(id)){
+            throw new ResourceNotFoundException("Category", "id", id);
+        }
+        categoryRepository.deleteById(id);
 	}
 
 }
