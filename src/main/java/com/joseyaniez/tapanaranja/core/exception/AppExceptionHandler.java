@@ -11,6 +11,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import com.joseyaniez.tapanaranja.core.exception.business.ResourceAlreadyExistsException;
 import com.joseyaniez.tapanaranja.core.exception.response.ErrorResponse;
@@ -40,6 +41,23 @@ public class AppExceptionHandler {
             errorMapResponse.put(error.getField(), error.getDefaultMessage())
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMapResponse);
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ErrorResponse> handleTypeParamError(MethodArgumentTypeMismatchException ex) {
+        String name = ex.getName(); // nombre del parámetro (p. ej. "id")
+        String type = ex.getRequiredType() != null ? ex.getRequiredType().getSimpleName() : "desconocido";
+        String message = String.format("El parámetro '%s' debe ser de tipo %s.", name, type);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+            new ErrorResponse(
+                "argument_type_error",
+                message,
+                HttpStatus.BAD_REQUEST.value(),
+                LocalDateTime.now()
+            )
+        );
+
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
