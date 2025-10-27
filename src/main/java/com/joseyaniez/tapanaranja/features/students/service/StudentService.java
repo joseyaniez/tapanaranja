@@ -8,8 +8,8 @@ import com.joseyaniez.tapanaranja.features.students.model.entity.Student;
  * StudentService
  */
 public interface StudentService {
-    Student getStudentById(Long id);
-    Student createStudent(StudentRequest studentRequest);
-    Student updateStudent(Long id, StudentRequest studentRequest);
-    void deleteStudent(Long id);
+    Student getById(Long id);
+    Student create(StudentRequest studentRequest);
+    Student update(Long id, StudentRequest studentRequest);
+    void delete(Long id);
 }
