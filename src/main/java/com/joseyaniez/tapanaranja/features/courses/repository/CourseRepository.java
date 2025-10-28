@@ -9,6 +9,5 @@ import com.joseyaniez.tapanaranja.features.courses.model.entity.Course;
  * CourseRepository
  */
 public interface CourseRepository extends JpaRepository<Course, Long> {
-
-    
+    boolean existsByName(String name);
 }

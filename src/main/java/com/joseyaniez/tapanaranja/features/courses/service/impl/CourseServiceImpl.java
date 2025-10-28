@@ -5,12 +5,15 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.joseyaniez.tapanaranja.core.exception.business.ResourceAlreadyExistsException;
 import com.joseyaniez.tapanaranja.core.exception.business.ResourceNotFoundException;
 import com.joseyaniez.tapanaranja.features.courses.model.dto.request.CourseRequest;
 import com.joseyaniez.tapanaranja.features.courses.model.dto.response.CourseResponse;
 import com.joseyaniez.tapanaranja.features.courses.model.entity.Course;
 import com.joseyaniez.tapanaranja.features.courses.repository.CourseRepository;
 import com.joseyaniez.tapanaranja.features.courses.service.CourseService;
+import com.joseyaniez.tapanaranja.features.students.model.entity.Category;
+import com.joseyaniez.tapanaranja.features.students.repository.CategoryRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class CourseServiceImpl implements CourseService {
 
     private final CourseRepository courseRepository;
+    private final CategoryRepository categoryRepository;
 
 	@Override
 	public List<CourseResponse> getAllCourses() {
@@ -43,8 +47,24 @@ public class CourseServiceImpl implements CourseService {
 
 	@Override
 	public CourseResponse createCourse(CourseRequest courseRequest) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'createCourse'");
+        if(courseRepository.existsByName(courseRequest.getName())){
+            throw new ResourceAlreadyExistsException("Course", "name", courseRequest.getName());
+        }
+
+        Category category = categoryRepository.findById(courseRequest.getCategoryId())
+            .orElseThrow(() -> new ResourceNotFoundException("Category", "id", courseRequest.getCategoryId()));
+
+        Course course = new Course();
+        course.setName(courseRequest.getName());
+        course = courseRepository.save(course);
+
+        category.getCourses().add(course);
+        category = categoryRepository.save(category);
+
+        return new CourseResponse(
+            course.getId(),
+            course.getName()
+        );
 	}
 
 	@Override
