@@ -37,8 +37,8 @@ public class StudentServiceImpl implements StudentService {
             throw new ResourceAlreadyExistsException("Student", "username", studentRequest.getUsername());
         }
         Category category = categoryRepository
-            .findById(studentRequest.getCategoty_id())
-            .orElseThrow(() -> new ResourceNotFoundException("Category", "id", studentRequest.getCategoty_id()));
+            .findById(studentRequest.getCategory_id())
+            .orElseThrow(() -> new ResourceNotFoundException("Category", "id", studentRequest.getCategory_id()));
         Student student = new Student();
         student.setUsername(studentRequest.getUsername());
         student.setCategory(category);
@@ -55,8 +55,8 @@ public class StudentServiceImpl implements StudentService {
             throw new ResourceAlreadyExistsException("Student", "username", studentRequest.getUsername());
         }
         Category category = categoryRepository
-            .findById(studentRequest.getCategoty_id())
-            .orElseThrow(() -> new ResourceNotFoundException("Category", "id", studentRequest.getCategoty_id()));
+            .findById(studentRequest.getCategory_id())
+            .orElseThrow(() -> new ResourceNotFoundException("Category", "id", studentRequest.getCategory_id()));
         student.setUsername(studentRequest.getUsername());
         if(!student.getCategory().equals(category)){
             student.setCategory(category);

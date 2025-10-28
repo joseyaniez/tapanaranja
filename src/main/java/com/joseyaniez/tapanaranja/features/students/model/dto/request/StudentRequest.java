@@ -15,5 +15,5 @@ public class StudentRequest {
     @NotBlank(message = "Debes proporcionar un nombre de usuario")
     private String username;
     @NotNull(message = "Debes proporcionar un identificador de categoría")
-    private Long categoty_id;
+    private Long category_id;
 }
