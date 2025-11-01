@@ -3,6 +3,8 @@ package com.joseyaniez.tapanaranja.features.courses.controller;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -64,6 +66,12 @@ public class CourseController {
     public ApiResponse<CourseUpdateResponse> updateCategories(@PathVariable Long id, @RequestBody @Valid CourseUpdateCategoriesRequest catReq){
         CourseUpdateResponse course = courseService.updateCourseCategories(id, catReq.getCategoryIds());
         return new ApiResponse<CourseUpdateResponse>(true, course, "Curso actualizado");
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id){
+        courseService.deleteCourse(id);
+        return ResponseEntity.noContent().build();
     }
     
 }

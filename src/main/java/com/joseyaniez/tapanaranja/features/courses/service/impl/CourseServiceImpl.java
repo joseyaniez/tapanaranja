@@ -97,9 +97,14 @@ public class CourseServiceImpl implements CourseService {
     }
 
 	@Override
+    @Transactional
 	public void deleteCourse(Long id) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'deleteCourse'");
+        Course course = courseRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Course", "id", id));
+        for(Category category: course.getCategories()){
+            category.getCourses().remove(course);
+        }
+        courseRepository.deleteById(id);
 	}
 
     
