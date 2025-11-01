@@ -1,6 +1,8 @@
 
 package com.joseyaniez.tapanaranja.features.courses.controller;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,6 +49,12 @@ public class ChapterController {
     public ApiResponse<ChapterResponse> update(@PathVariable Long id, @RequestBody @Valid ChapterRequest chapterRequest){
         ChapterResponse response = chapterService.updateChapter(id, chapterRequest);
         return new ApiResponse<ChapterResponse>(true, response, "Chapter actualizado");
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id){
+        chapterService.deleteChapter(id);
+        return ResponseEntity.noContent().build();
     }
     
 }

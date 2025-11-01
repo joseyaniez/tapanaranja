@@ -64,6 +64,9 @@ public class ChapterServiceImpl implements ChapterService {
 
 	@Override
 	public void deleteChapter(Long id) {
+        Chapter chapter = chapterRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Chapter", "id", id));
+        chapterRepository.delete(chapter);
 	}
 
     
