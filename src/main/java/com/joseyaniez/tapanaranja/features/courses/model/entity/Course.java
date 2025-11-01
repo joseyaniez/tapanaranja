@@ -7,12 +7,15 @@ import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.joseyaniez.tapanaranja.features.students.model.entity.Category;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,6 +36,9 @@ public class Course {
 
     @OneToMany(mappedBy = "course", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Chapter> chapters;
+
+    @ManyToMany(mappedBy = "courses")
+    private List<Category> categories;
 
     @CreationTimestamp
     @Column(updatable = false)
