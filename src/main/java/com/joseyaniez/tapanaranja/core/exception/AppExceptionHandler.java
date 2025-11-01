@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import com.joseyaniez.tapanaranja.core.exception.business.ResourceAlreadyExistsException;
+import com.joseyaniez.tapanaranja.core.exception.business.ResourceAlreadyHasChildren;
 import com.joseyaniez.tapanaranja.core.exception.business.ResourceNotFoundException;
 import com.joseyaniez.tapanaranja.core.exception.response.ErrorResponse;
 
@@ -22,6 +23,18 @@ import com.joseyaniez.tapanaranja.core.exception.response.ErrorResponse;
  */
 @RestControllerAdvice
 public class AppExceptionHandler {
+
+    @ExceptionHandler(ResourceAlreadyHasChildren.class)
+    public ResponseEntity<ErrorResponse> handleResourceAlreadyExists(ResourceAlreadyHasChildren ex){
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(
+            new ErrorResponse(
+                ex.getCode(),
+                ex.getMessage(),
+                ex.getStatus().value(),
+                LocalDateTime.now()
+            )
+        );
+    }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleResourceAlreadyExists(ResourceNotFoundException ex){

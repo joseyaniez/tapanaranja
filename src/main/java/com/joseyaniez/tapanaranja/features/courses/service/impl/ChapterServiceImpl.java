@@ -26,8 +26,9 @@ public class ChapterServiceImpl implements ChapterService {
 
 	@Override
 	public ChapterResponse getChapterById(Long id) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'getChapterById'");
+        Chapter chapter = chapterRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Chapter", "id", id));
+        return new ChapterResponse(chapter.getName(), chapter.getCourse().getId(), chapter.getChapterOrder());
 	}
 
 	@Override
@@ -37,20 +38,32 @@ public class ChapterServiceImpl implements ChapterService {
         Chapter chapter = new Chapter();
         chapter.setName(chapterRequest.name());
         chapter.setCourse(course);
+        if(chapterRequest.chapterOrder() != null){
+            chapter.setChapterOrder(chapterRequest.chapterOrder());
+        }
         chapter = chapterRepository.save(chapter);
-        return new ChapterResponse(chapter.getName(), course.getId());
+        return new ChapterResponse(chapter.getName(), course.getId(), chapter.getChapterOrder());
 	}
 
 	@Override
 	public ChapterResponse updateChapter(Long id, ChapterRequest chapterRequest) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'updateChapter'");
+        Chapter chapter = chapterRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Chapter", "id", id));
+        if(!chapter.getName().equals(chapterRequest.name())){
+            chapter.setName(chapterRequest.name());
+        }
+        if(chapterRequest.chapterOrder() != null){
+            chapter.setChapterOrder(chapterRequest.chapterOrder());
+        }
+        Course course = courseRepository.findById(chapterRequest.courseId())
+            .orElseThrow(() -> new ResourceNotFoundException("Course", "id", chapterRequest.courseId()));
+        chapter.setCourse(course);
+        chapter = chapterRepository.save(chapter);
+        return new ChapterResponse(chapter.getName(), chapter.getCourse().getId(), chapter.getChapterOrder());
 	}
 
 	@Override
 	public void deleteChapter(Long id) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'deleteChapter'");
 	}
 
     

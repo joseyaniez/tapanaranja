@@ -11,5 +11,6 @@ public record ChapterRequest(
     @NotBlank
     String name,
     @NotNull
-    Long courseId
+    Long courseId,
+    Integer chapterOrder
 ) {}

@@ -7,6 +7,7 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 
 import com.joseyaniez.tapanaranja.core.exception.business.ResourceAlreadyExistsException;
+import com.joseyaniez.tapanaranja.core.exception.business.ResourceAlreadyHasChildren;
 import com.joseyaniez.tapanaranja.core.exception.business.ResourceNotFoundException;
 import com.joseyaniez.tapanaranja.features.courses.model.dto.request.CourseRequest;
 import com.joseyaniez.tapanaranja.features.courses.model.dto.response.CourseResponse;
@@ -101,6 +102,9 @@ public class CourseServiceImpl implements CourseService {
 	public void deleteCourse(Long id) {
         Course course = courseRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Course", "id", id));
+        if(!course.getChapters().isEmpty()){
+            throw new ResourceAlreadyHasChildren("Course", "Chapter");
+        }
         for(Category category: course.getCategories()){
             category.getCourses().remove(course);
         }
