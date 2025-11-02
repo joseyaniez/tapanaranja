@@ -1,13 +1,16 @@
 
 package com.joseyaniez.tapanaranja.features.courses.model.dto.request;
 
-import com.joseyaniez.tapanaranja.features.courses.model.entity.Chapter;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * SectionRequest
  */
 public record SectionRequest(
+    @NotBlank
     String name,
-    Chapter chapter
+    @NotNull
+    Long chapterId
 ) {
 }
