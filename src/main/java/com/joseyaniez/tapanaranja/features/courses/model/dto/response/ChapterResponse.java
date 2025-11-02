@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record ChapterResponse(
+    Long id,
     String name,
     Long courseId,
     Integer chapterOrder

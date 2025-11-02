@@ -3,6 +3,7 @@ package com.joseyaniez.tapanaranja.features.courses.service.impl;
 
 import org.springframework.stereotype.Service;
 
+import com.joseyaniez.tapanaranja.core.exception.business.ResourceAlreadyHasChildren;
 import com.joseyaniez.tapanaranja.core.exception.business.ResourceNotFoundException;
 import com.joseyaniez.tapanaranja.features.courses.model.dto.request.ChapterRequest;
 import com.joseyaniez.tapanaranja.features.courses.model.dto.response.ChapterResponse;
@@ -12,6 +13,7 @@ import com.joseyaniez.tapanaranja.features.courses.repository.ChapterRepository;
 import com.joseyaniez.tapanaranja.features.courses.repository.CourseRepository;
 import com.joseyaniez.tapanaranja.features.courses.service.ChapterService;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -28,7 +30,7 @@ public class ChapterServiceImpl implements ChapterService {
 	public ChapterResponse getChapterById(Long id) {
         Chapter chapter = chapterRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Chapter", "id", id));
-        return new ChapterResponse(chapter.getName(), chapter.getCourse().getId(), chapter.getChapterOrder());
+        return new ChapterResponse(chapter.getId(), chapter.getName(), chapter.getCourse().getId(), chapter.getChapterOrder());
 	}
 
 	@Override
@@ -42,7 +44,7 @@ public class ChapterServiceImpl implements ChapterService {
             chapter.setChapterOrder(chapterRequest.chapterOrder());
         }
         chapter = chapterRepository.save(chapter);
-        return new ChapterResponse(chapter.getName(), course.getId(), chapter.getChapterOrder());
+        return new ChapterResponse(chapter.getId(), chapter.getName(), course.getId(), chapter.getChapterOrder());
 	}
 
 	@Override
@@ -59,13 +61,17 @@ public class ChapterServiceImpl implements ChapterService {
             .orElseThrow(() -> new ResourceNotFoundException("Course", "id", chapterRequest.courseId()));
         chapter.setCourse(course);
         chapter = chapterRepository.save(chapter);
-        return new ChapterResponse(chapter.getName(), chapter.getCourse().getId(), chapter.getChapterOrder());
+        return new ChapterResponse(chapter.getId(), chapter.getName(), chapter.getCourse().getId(), chapter.getChapterOrder());
 	}
 
 	@Override
+    @Transactional
 	public void deleteChapter(Long id) {
         Chapter chapter = chapterRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Chapter", "id", id));
+        if(!chapter.getSections().isEmpty()){
+            throw new ResourceAlreadyHasChildren("Chapter", "Section");
+        }
         chapterRepository.delete(chapter);
 	}
 

@@ -26,8 +26,9 @@ public class SectionServiceImpl implements SectionService {
 
 	@Override
 	public SectionResponse getSectionById(Long id) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'getSectionById'");
+        Section section = sectionRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Section", "id", id));
+        return new SectionResponse(section.getId(), section.getName(), section.getChapter().getName());
 	}
 
 	@Override
@@ -38,20 +39,29 @@ public class SectionServiceImpl implements SectionService {
         section.setName(sectionRequest.name());
         section.setChapter(chapter);
         section = sectionRepository.save(section);
-        return new SectionResponse(section.getName(), section.getChapter().getName());
+        return new SectionResponse(section.getId(), section.getName(), section.getChapter().getName());
 
 	}
 
 	@Override
 	public SectionResponse updateSection(Long id, SectionRequest sectionRequest) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'updateSection'");
+        Section section = sectionRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Section", "id", id));
+        if(!section.getName().equals(sectionRequest.name())){
+            section.setName(sectionRequest.name());
+        }
+        Chapter chapter = chapterRepository.findById(sectionRequest.chapterId())
+            .orElseThrow(() -> new ResourceNotFoundException("Chapter", "id", sectionRequest.chapterId()));
+        section.setChapter(chapter);
+        section = sectionRepository.save(section);
+        return new SectionResponse(section.getId(), section.getName(), section.getChapter().getName());
 	}
 
 	@Override
 	public void deleteSection(Long id) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'deleteSection'");
+        Section section = sectionRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Section", "id", id));
+        sectionRepository.delete(section);
 	}
 
     
