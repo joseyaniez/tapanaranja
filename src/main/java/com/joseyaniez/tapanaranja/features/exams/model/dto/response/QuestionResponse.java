@@ -7,7 +7,6 @@ package com.joseyaniez.tapanaranja.features.exams.model.dto.response;
 public record QuestionResponse(
     Long id,
     String content,
-    String imagePath,
-    String sectionId
+    String imagePath
 ) {
 }
