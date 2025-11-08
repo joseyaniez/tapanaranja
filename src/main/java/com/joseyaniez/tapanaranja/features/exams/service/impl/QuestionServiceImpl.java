@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.joseyaniez.tapanaranja.core.exception.business.ResourceNotFoundException;
+import com.joseyaniez.tapanaranja.features.courses.model.entity.Section;
+import com.joseyaniez.tapanaranja.features.courses.repository.SectionRepository;
 import com.joseyaniez.tapanaranja.features.exams.model.dto.request.QuestionRequest;
 import com.joseyaniez.tapanaranja.features.exams.model.dto.response.QuestionResponse;
 import com.joseyaniez.tapanaranja.features.exams.model.entity.Question;
@@ -22,10 +24,10 @@ import lombok.RequiredArgsConstructor;
 public class QuestionServiceImpl implements QuestionService {
 
     private final QuestionRepository questionRepository;
+    private final SectionRepository sectionRepository;
 
 	@Override
 	public List<QuestionResponse> getQuestionsByCourse(Long courseId, int size) {
-		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("Unimplemented method 'getQuestionsByCourse'");
 	}
 
@@ -37,8 +39,8 @@ public class QuestionServiceImpl implements QuestionService {
 
 	@Override
 	public List<QuestionResponse> getQuestionsBySection(Long sectionId, int size) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'getQuestionsBySection'");
+        List<Question> questions = questionRepository.findBySectionId(sectionId);
+        return questions.stream().map(q -> new QuestionResponse(q.getId(), q.getContent(), q.getImagePath())).toList();
 	}
 
 	@Override
@@ -50,20 +52,34 @@ public class QuestionServiceImpl implements QuestionService {
 
 	@Override
 	public QuestionResponse createQuestion(QuestionRequest questionRequest) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'createQuestion'");
+        Section section = sectionRepository.findById(questionRequest.sectionId())
+            .orElseThrow(() -> new ResourceNotFoundException("Section", "id", questionRequest.sectionId()));
+        Question question = new Question();
+        question.setContent(questionRequest.content());
+        question.setImagePath(questionRequest.imagePath());
+        question.setSection(section);
+        question = questionRepository.save(question);
+        return new QuestionResponse(question.getId(), question.getContent(), question.getImagePath());
 	}
 
 	@Override
-	public QuestionResponse updateQuestion(QuestionRequest questionRequest) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'updateQuestion'");
+	public QuestionResponse updateQuestion(Long id, QuestionRequest questionRequest) {
+        Section section = sectionRepository.findById(questionRequest.sectionId())
+            .orElseThrow(() -> new ResourceNotFoundException("Section", "id", questionRequest.sectionId()));
+        Question question = questionRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Question", "id", id));
+        question.setContent(questionRequest.content());
+        question.setImagePath(questionRequest.imagePath());
+        question.setSection(section);
+        question = questionRepository.save(question);
+        return new QuestionResponse(question.getId(), question.getContent(), question.getImagePath());
 	}
 
 	@Override
 	public void deleteQuestion(Long id) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'deleteQuestion'");
+        Question question = questionRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Question", "id", id));
+        questionRepository.delete(question);
 	}
 
     

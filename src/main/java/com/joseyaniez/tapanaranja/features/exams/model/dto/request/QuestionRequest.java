@@ -1,13 +1,16 @@
 
 package com.joseyaniez.tapanaranja.features.exams.model.dto.request;
 
-import com.joseyaniez.tapanaranja.features.courses.model.entity.Section;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * QuestionRequest
  */
 public record QuestionRequest(
+    @NotBlank
     String content,
     String imagePath,
-    Section section
+    @NotNull
+    Long sectionId
 ) {}

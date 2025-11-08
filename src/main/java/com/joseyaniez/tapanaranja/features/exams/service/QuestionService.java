@@ -15,6 +15,6 @@ public interface QuestionService {
     List<QuestionResponse> getQuestionsBySection(Long sectionId, int size);
     QuestionResponse getQuestionById(Long id);
     QuestionResponse createQuestion(QuestionRequest questionRequest);
-    QuestionResponse updateQuestion(QuestionRequest questionRequest);
+    QuestionResponse updateQuestion(Long id, QuestionRequest questionRequest);
     void deleteQuestion(Long id);
 }

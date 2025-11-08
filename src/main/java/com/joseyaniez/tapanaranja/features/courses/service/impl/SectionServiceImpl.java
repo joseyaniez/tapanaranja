@@ -3,6 +3,7 @@ package com.joseyaniez.tapanaranja.features.courses.service.impl;
 
 import org.springframework.stereotype.Service;
 
+import com.joseyaniez.tapanaranja.core.exception.business.ResourceAlreadyHasChildren;
 import com.joseyaniez.tapanaranja.core.exception.business.ResourceNotFoundException;
 import com.joseyaniez.tapanaranja.features.courses.model.dto.request.SectionRequest;
 import com.joseyaniez.tapanaranja.features.courses.model.dto.response.SectionResponse;
@@ -61,6 +62,9 @@ public class SectionServiceImpl implements SectionService {
 	public void deleteSection(Long id) {
         Section section = sectionRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Section", "id", id));
+        if(!section.getQuestions().isEmpty()){
+            throw new ResourceAlreadyHasChildren("Section", "Question");
+        }
         sectionRepository.delete(section);
 	}
 
