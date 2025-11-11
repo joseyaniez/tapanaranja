@@ -67,14 +67,29 @@ public class AlternativeServiceImpl implements AlternativeService {
 
     @Override
     public AlternativeResponse updateAlternative(Long id, AlternativeRequest alternativeRequest) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateAlternative'");
+        Question question = questionRepository.findById(alternativeRequest.questionId())
+            .orElseThrow(() -> new ResourceNotFoundException("Question", "id", alternativeRequest.questionId()));
+        Alternative alternative = alternativeRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Alternative", "id", id));
+        alternative.setContent(alternativeRequest.content());
+        alternative.setImagePath(alternativeRequest.imagePath()); // TODO: Se deberá considerar actualizar imagen
+        alternative.setIsCorrect(alternativeRequest.isCorrect() == null ? false : alternativeRequest.isCorrect());
+        alternative.setQuestion(question);
+        alternative = alternativeRepository.save(alternative);
+        return new AlternativeResponse(
+            alternative.getId(),
+            alternative.getContent(),
+            alternative.getImagePath(),
+            alternative.getIsCorrect(),
+            alternative.getQuestion().getId()
+        );
     }
 
     @Override
     public void deleteAlternative(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteAlternative'");
+        Alternative alternative = alternativeRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Alternative", "id", id));
+        alternativeRepository.delete(alternative);
     }
     
 }
