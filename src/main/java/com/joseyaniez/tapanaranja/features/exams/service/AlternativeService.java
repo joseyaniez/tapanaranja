@@ -10,7 +10,7 @@ import com.joseyaniez.tapanaranja.features.exams.model.dto.response.AlternativeR
  * AlternativeService
  */
 public interface AlternativeService {
-    List<AlternativeResponse> getAlternativebyCourse(Long questionId);
+    List<AlternativeResponse> getAlternativesbyCourse(Long questionId);
     AlternativeResponse getAlternativeById(Long id);
     AlternativeResponse createAlternative(AlternativeRequest alternativeRequest);
     AlternativeResponse updateAlternative(Long id, AlternativeRequest alternativeRequest);
